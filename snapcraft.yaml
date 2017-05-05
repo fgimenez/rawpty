@@ -1,0 +1,22 @@
+name: rawpty
+version: 1.0
+summary: execute a command on raw pty over ssh
+description: |
+    This snap allows you to create a raw interactive pty on a remote
+    host accessible through ssh and execute a command on it. The ssh
+    connection is governed by env vars with (default  values)
+    RAWPTY_HOST (localhost) , RAWPTY_PORT (22), RAWPTY_USERNAME (test),
+    RAWPTY_PASSWORD (ubuntu)
+confinement: strict
+grade: devel
+
+apps:
+    rawpty:
+        command: bin/rawpty
+        plugs: [network]
+
+parts:
+    rawpty:
+        plugin: go
+        source: .
+        go-importpath: github.com/fgimenez/rawpty

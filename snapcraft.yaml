@@ -8,7 +8,7 @@ description: |
     RAWPTY_HOST (localhost) , RAWPTY_PORT (22), RAWPTY_USERNAME (test),
     RAWPTY_PASSWORD (ubuntu)
 confinement: strict
-grade: devel
+grade: stable
 
 apps:
     rawpty:

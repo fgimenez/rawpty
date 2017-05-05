@@ -20,3 +20,4 @@ parts:
         plugin: go
         source: .
         go-importpath: github.com/fgimenez/rawpty
+        build-packages: [git]

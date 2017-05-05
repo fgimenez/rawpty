@@ -2,8 +2,10 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"golang.org/x/crypto/ssh"
@@ -48,7 +50,8 @@ func main() {
 	// copy environment variables to cmd
 	var buffer bytes.Buffer
 	for _, e := range os.Environ() {
-		buffer.WriteString(e)
+		pair := strings.Split(e, "=")
+		buffer.WriteString(fmt.Sprintf(`%s="%s"`, pair[0], pair[1]))
 		buffer.WriteString(" ")
 	}
 	// the first argument contains a string with the command to execute

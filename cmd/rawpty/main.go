@@ -1,9 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"log"
 	"os"
-	"strings"
 	"time"
 
 	"golang.org/x/crypto/ssh"
@@ -45,16 +45,16 @@ func main() {
 		log.Fatalf("cannot get remote pseudo terminal: %v", err)
 	}
 
-	// copy environment variables to session
+	// copy environment variables to cmd
+	var buffer bytes.Buffer
 	for _, e := range os.Environ() {
-		pair := strings.Split(e, "=")
-		if err := session.Setenv(pair[0], pair[1]); err != nil {
-			log.Fatalf("error setting env var %s", err)
-		}
+		buffer.WriteString(e)
+		buffer.WriteString(" ")
 	}
-
 	// the first argument contains a string with the command to execute
-	if err := session.Run(os.Args[1]); err != nil {
+	buffer.WriteString(os.Args[1])
+
+	if err := session.Run(buffer.String()); err != nil {
 		log.Fatalf("error running command %s", err)
 	}
 }

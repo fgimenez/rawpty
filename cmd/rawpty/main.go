@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"golang.org/x/crypto/ssh"
-	"golang.org/x/crypto/ssh/terminal"
 )
 
 func getenv(name, defaultValue string) string {
@@ -44,12 +43,6 @@ func main() {
 	if err := session.RequestPty(getenv("TERM", "vt100"), 80, 40, nil); err != nil {
 		log.Fatalf("cannot get remote pseudo terminal: %v", err)
 	}
-
-	tstate, terr := terminal.MakeRaw(0)
-	if terr != nil {
-		log.Fatalf("cannot put local terminal in raw mode: %v", terr)
-	}
-	defer terminal.Restore(0, tstate)
 
 	// the first argument contains a string with the command to execute
 	if err := session.Run(os.Args[1]); err != nil {

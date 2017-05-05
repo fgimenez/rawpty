@@ -43,7 +43,7 @@ func main() {
 	session.Stdout = os.Stdout
 	session.Stderr = os.Stderr
 
-	if err := session.RequestPty(getenv("TERM", "vt100"), 80, 40, nil); err != nil {
+	if err := session.RequestPty(getenv("TERM", "vt100"), 204, 60, nil); err != nil {
 		log.Fatalf("cannot get remote pseudo terminal: %v", err)
 	}
 

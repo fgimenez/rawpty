@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"golang.org/x/crypto/ssh"
@@ -42,6 +43,14 @@ func main() {
 
 	if err := session.RequestPty(getenv("TERM", "vt100"), 80, 40, nil); err != nil {
 		log.Fatalf("cannot get remote pseudo terminal: %v", err)
+	}
+
+	// copy environment variables to session
+	for _, e := range os.Environ() {
+		pair := strings.Split(e, "=")
+		if err := session.Setenv(pair[0], pair[1]); err != nil {
+			log.Fatalf("error setting env var %s", err)
+		}
 	}
 
 	// the first argument contains a string with the command to execute
